@@ -1228,10 +1228,6 @@ abstract class KafkaManager {
      * Shows the scripts help info with optional error message
      */
     protected function show_help($msg = "") {
-        if ($msg) {
-            echo "ERROR:\n";
-            echo "  ".wordwrap($msg, 72, "\n  ")."\n\n";
-        }
         echo "Kafka worker manager script\n\n";
         echo "USAGE:\n";
         echo "  # ".basename(__FILE__)." | -c CONFIG [-v] [-l LOG_FILE] [-d] [-v] [-a] [-P PID_FILE]\n\n";
@@ -1252,6 +1248,10 @@ abstract class KafkaManager {
         echo "  -x SECONDS     Maximum seconds for a worker to live\n";
         echo "  -Z             Parse the command line and config file then dump it to the screen and exit.\n";
         echo "\n";
+        if ($msg) {
+            echo "ERROR:\n";
+            echo "  ".wordwrap($msg, 72, "\n");
+        }
         exit();
     }
 
