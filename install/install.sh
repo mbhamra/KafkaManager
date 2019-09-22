@@ -54,6 +54,7 @@ fi
 mkdir -p ${INSTALL_DIR}
 cp -r ${WORKING_DIR}/../* ${INSTALL_DIR}/
 echo "Installing to ${INSTALL_DIR}"
+chmod +x ${INSTALL_DIR}/bin/manager.php
 ln -fs ${INSTALL_DIR}/bin/manager.php ${DAEMON}
 echo "Installing executable to ${DAEMON}"
 
