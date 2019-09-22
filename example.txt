@@ -1,0 +1,2 @@
+# Example command line from base directory for running a KafkaManager
+./bin/manager.php -w ./lib/workers/ -c ./etc/config.ini -vvv
