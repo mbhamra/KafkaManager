@@ -24,7 +24,7 @@ if (!class_exists("KafkaManager")) {
 class KafkaPeclManager extends KafkaManager {
 
     protected function start_lib_worker($worker_list, $timeouts = []) {
-        $this->log('called start_lib_worker of KafkaPeclManager', KafkaManager::LOG_LEVEL_PROC_INFO);
+        $this->log('called start_lib_worker of KafkaPeclManager', KafkaManager::LOG_LEVEL_CRAZY);
         $pid = getmypid();
         foreach($worker_list as $worker) {
             $config = $this->getWorkerConfiguration($worker);
@@ -53,6 +53,7 @@ class KafkaPeclManager extends KafkaManager {
                     }
                 });
                 foreach($config['Config'] as $key => $value) {
+                    $this->log('set ' . $key . ' => ' . $value, KafkaManager::LOG_LEVEL_DEBUG);
                     $conf->set($key, $value);
                 }
                 // $conf->set('group.id', $config['group_id']);
@@ -97,6 +98,7 @@ class KafkaPeclManager extends KafkaManager {
                 */
                 // set topic level configuration
                 foreach($config['TopicConfig'] as $key => $val) {
+                    $this->log('set ' . $key . ' => ' . $value, KafkaManager::LOG_LEVEL_DEBUG);
                     $topicConf->set($key, $value);
                 }
 
@@ -112,6 +114,7 @@ class KafkaPeclManager extends KafkaManager {
 
                 //$this->log('Consumjers pid: ' . $pid. ' : ' . print_r($this->consumers[$pid],1));
                 while (!$this->stop_work) {
+
                     $message = $consumer->consume($config['ConsumerConfig']['timeout']); // timeout
                     switch ($message->err) {
                         case RD_KAFKA_RESP_ERR_NO_ERROR:
@@ -158,12 +161,8 @@ class KafkaPeclManager extends KafkaManager {
 
         if ($objects===null) $objects = array();
 
-        $w = $job->workload();
-
-        $h = $job->handle();
-
         $job_name = $job->functionName();
-        // $job_name = substr($job_name, strlen($this->config['prefix'])); // topic prefix from worker class name
+
         if ($this->prefix) {
             $func = $this->prefix.$job_name;
         } else {
@@ -219,10 +218,10 @@ class KafkaPeclManager extends KafkaManager {
 
                 if (is_array($l)) {
                     foreach ($l as $ln) {
-                        $this->log("($h) $ln", KafkaManager::LOG_LEVEL_WORKER_INFO);
+                        $this->log("$ln", KafkaManager::LOG_LEVEL_WORKER_INFO);
                     }
                 } else {
-                    $this->log("($h) $l", KafkaManager::LOG_LEVEL_WORKER_INFO);
+                    $this->log("$l", KafkaManager::LOG_LEVEL_WORKER_INFO);
                 }
 
             }
@@ -238,10 +237,10 @@ class KafkaPeclManager extends KafkaManager {
 
         if (is_array($result_log)) {
             foreach ($result_log as $ln) {
-                $this->log("($h) $ln", KafkaManager::LOG_LEVEL_DEBUG);
+                $this->log("$ln", KafkaManager::LOG_LEVEL_DEBUG);
             }
         } else {
-            $this->log("($h) $result_log", KafkaManager::LOG_LEVEL_DEBUG);
+            $this->log("$result_log", KafkaManager::LOG_LEVEL_DEBUG);
         }
 
         $type = gettype($result);

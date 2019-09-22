@@ -586,8 +586,17 @@ abstract class KafkaManager {
 
         foreach ($config as $function=>$data) {
 
-            if (strcasecmp($function, 'worker') >= 0 && strcasecmp($function, self::DEFAULT_CONFIG) != 0 ) {
+            if (strcasecmp($function, 'workers') >= 0 && strcasecmp($function, self::DEFAULT_CONFIG) != 0 ) {
                 //$this->config['functions'][$function] = $data;
+                // check nested array
+                foreach($data as $key => $value) {
+                    if (strpos($key,'.') !== false) {
+                        // nested array found
+                        list($main_key,$inner_key) = explode('.',$key);
+                        $data[$main_key][$inner_key] = $value;
+                        unset($data[$key]);
+                    }
+                }
                 $this->config['functions'] = $data;
             } else if(strcasecmp($function, self::DEFAULT_CONFIG) != 0) {
                 $this->config[$function] = $data;
@@ -1194,7 +1203,11 @@ abstract class KafkaManager {
                     }
                 } else {
                     if (isset($worker_conf[$key])) {
-                        $conf[$key] = $worker_conf[$key];
+                        if (is_array($worker_conf[$key])) {
+                            $conf[$key] = array_merge($conf[$key], $worker_conf[$key]);
+                        } else {
+                            $conf[$key] = $worker_conf[$key];
+                        }
                     }
                 }
             }
