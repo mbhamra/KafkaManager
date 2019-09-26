@@ -3,6 +3,12 @@ Continue keep running consumers in background in php.
 
 PHP daemon for kafka consumers
 
+## What is Kafka Manager and use ?
+
+We need to keep running consumers for long time. Continue keep running any php file is very big task. We need to create many files with same code for every topic consumer. To reduce same code redundancy we create a manager which manage topic consumers with same code base. So you can focus on your business logic.
+
+By using of this kafka manager, all you need to do is write the code that actually does the work and not all the repetitive worker setup. Just need to create files in specific directory. All files located in specified directory called as worker to consume messages from specific topic. 
+
 ## Pre Requisites
 
 - PHP 5.6 (Tested with PHP 7)
@@ -11,11 +17,12 @@ PHP daemon for kafka consumers
 - Install librdkafka (https://github.com/edenhill/librdkafka)
 - Install rdkafka (https://arnaud.le-blanc.net/php-rdkafka/phpdoc/rdkafka.setup.html)
 
-## What is Kafka Manager and use ?
+## Installation Steps
 
-We need to keep running consumers for long time. Continue keep running any php file is very big task. We need to create many files with same code for every topic consumer. To reduce same code redundancy we create a manager which manage topic consumers with same code base. So you can focus on your business logic.
-
-By using of this kafka manager, all you need to do is write the code that actually does the work and not all the repetitive worker setup. Just need to create files in specific directory. All files located in specified directory called as worker to consume messages from specific topic. 
+Run following command with root user
+```
+sh install/install.sh
+```
 
 ## How it works ?
 
